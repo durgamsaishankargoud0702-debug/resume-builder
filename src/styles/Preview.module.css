@@ -1,0 +1,417 @@
+.previewContainer {
+    background-color: white;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    text-transform: uppercase;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.headerText {
+    flex: 1;
+}
+
+.name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.profilePhotoSection {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border: 3px solid #f3f4f6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.profilePhotoSection:hover {
+    border-color: #e5e7eb;
+    transform: scale(1.02);
+}
+
+.profilePhoto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photoPlaceholder {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* Shapes */
+.shapeCircle {
+    border-radius: 50%;
+}
+
+.shapeSquare {
+    border-radius: 0.5rem;
+}
+
+/* Sizes */
+.sizeSmall {
+    width: 100px;
+    height: 100px;
+}
+
+.sizeMedium {
+    width: 140px;
+    height: 140px;
+}
+
+.sizeLarge {
+    width: 180px;
+    height: 180px;
+}
+
+.contactInfo {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.section {
+    margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.25rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.experienceItem,
+.educationItem,
+.projectItem {
+    margin-bottom: 1rem;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.25rem;
+}
+
+.itemTitle {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1f2937;
+}
+
+.itemSubtitle {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.date {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-top: 0.25rem;
+    white-space: pre-line;
+}
+
+.skillsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skillTag {
+    background-color: #f3f4f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.classicAts .name {
+    font-size: 2rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid black;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.classicAts .sectionTitle {
+    border-bottom: 1px solid black;
+    color: black;
+}
+
+.classicAts .contactItem svg {
+    display: none;
+}
+
+.classicAts .skillTag {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-weight: normal;
+}
+
+.classicAts .skillTag::after {
+    content: " • ";
+    margin-left: 0.5rem;
+}
+
+.classicAts .skillTag:last-child::after {
+    content: "";
+}
+
+/* --- Minimal ATS --- */
+.minimalAts {
+    font-family: Helvetica, sans-serif;
+    text-transform: none;
+}
+
+.minimalAts .name {
+    font-weight: normal;
+    font-size: 2.2rem;
+}
+
+.minimalAts .sectionTitle {
+    border-bottom: none;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.minimalAts .contactItem svg {
+    display: none;
+}
+
+.minimalAts .skillTag {
+    background: white;
+    border: 1px solid #e5e7eb;
+}
+
+/* --- Professional ATS --- */
+.professionalAts {
+    font-family: 'Times New Roman', serif;
+    text-transform: none;
+}
+
+.professionalAts .name {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.professionalAts .contactInfo {
+    justify-content: center;
+}
+
+.professionalAts .sectionTitle {
+    background-color: #f3f4f6;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+}
+
+.professionalAts .contactItem svg {
+    display: none;
+}
+
+/* --- Modern ATS --- */
+.modernAts {
+    font-family: var(--font-roboto), sans-serif;
+    text-transform: none;
+}
+
+.modernAts .name {
+    color: #2563eb;
+}
+
+.modernAts .sectionTitle {
+    color: #2563eb;
+    border-bottom: 2px solid #2563eb;
+}
+
+.modernAts .contactItem svg {
+    display: none;
+}
+
+/* --- Executive ATS --- */
+.executiveAts {
+    font-family: Georgia, serif;
+    text-transform: none;
+    line-height: 1.6;
+}
+
+.executiveAts .name {
+    font-variant: small-caps;
+    border-bottom: 1px solid #333;
+}
+
+.executiveAts .sectionTitle {
+    border-bottom: 1px solid #333;
+    font-variant: small-caps;
+}
+
+.executiveAts .contactItem svg {
+    display: none;
+}
+
+/* --- Hybrid ATS --- */
+.hybridAts {
+    font-family: var(--font-lato), sans-serif;
+    text-transform: none;
+}
+
+.hybridAts .header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 1rem;
+}
+
+.hybridAts .contactItem svg {
+    display: none;
+}
+
+/* --- Creative --- */
+.creative {
+    background-color: #fff;
+    font-family: var(--font-poppins), sans-serif;
+}
+
+.creative .header {
+    background-color: #1f2937;
+    color: white;
+    padding: 2rem;
+    margin: -40px -40px 2rem -40px;
+}
+
+.creative .name {
+    color: white;
+}
+
+.creative .contactInfo {
+    color: #9ca3af;
+}
+
+.creative .sectionTitle {
+    color: #4f46e5;
+    border-bottom: 2px solid #4f46e5;
+    display: inline-block;
+}
+
+.creative .skillTag {
+    background-color: #4f46e5;
+    color: white;
+}
+
+/* --- Clean --- */
+.clean {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: none;
+}
+
+.clean .name {
+    font-weight: 300;
+    letter-spacing: -0.05em;
+}
+
+.clean .sectionTitle {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    border-bottom: none;
+    margin-bottom: 0.5rem;
+}
+
+.clean .skillTag {
+    background: transparent;
+    border: 1px solid #000;
+    color: #000;
+    border-radius: 0;
+}
+
+/* --- Elegant --- */
+.elegant {
+    font-family: var(--font-playfair), serif;
+    text-transform: none;
+    background-color: #fafafa;
+}
+
+.elegant .name {
+    font-style: italic;
+    text-align: center;
+}
+
+.elegant .contactInfo {
+    justify-content: center;
+    font-family: var(--font-lato), sans-serif;
+}
+
+.elegant .sectionTitle {
+    text-align: center;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 0.5rem;
+    font-style: italic;
+}
+
+.elegant .itemHeader {
+    flex-direction: column;
+}
+
+.elegant .date {
+    font-family: var(--font-lato), sans-serif;
+}
+
+@media print {
+    .previewContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    @page {
+        margin: 10mm;
+        size: auto;
+    }
+}
