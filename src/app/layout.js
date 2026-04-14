@@ -39,6 +39,8 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+
 export const metadata = {
   title: "Resume Builder Pro",
   description: "Create your professional resume in minutes",
@@ -51,7 +53,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} ${lato.variable} ${poppins.variable} ${playfair.variable}`}
         suppressHydrationWarning
       >
-        {children}
+        <SessionProviderWrapper>
+          {children}
+        </SessionProviderWrapper>
       </body>
     </html>
   );

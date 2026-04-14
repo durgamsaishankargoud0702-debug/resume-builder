@@ -399,6 +399,416 @@
     font-family: var(--font-lato), sans-serif;
 }
 
+/* --- Premium Dark --- */
+.premiumDark {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-family: var(--font-inter, sans-serif);
+    text-transform: none;
+}
+
+.premiumDark .name {
+    color: #f8fafc;
+    font-weight: 800;
+}
+
+.premiumDark .sectionTitle {
+    color: #f8fafc;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.5rem;
+}
+
+.premiumDark .header {
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 2rem;
+}
+
+.premiumDark .itemTitle {
+    color: #f1f5f9;
+}
+
+.premiumDark .itemSubtitle, .premiumDark .date {
+    color: #94a3b8;
+}
+
+.premiumDark .skillTag {
+    background-color: #1e293b;
+    color: #cbd5e1;
+    border: 1px solid #334155;
+}
+
+.premiumDark .contactInfo {
+    color: #94a3b8;
+}
+
+.premiumDark a {
+    color: #38bdf8 !important;
+}
+
+.premiumDark .profilePhotoSection {
+    border-color: #334155;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.premiumDark .photoPlaceholder {
+    background-color: #1e293b;
+    color: #64748b;
+}
+
+/* --- Glassmorphism --- */
+.glassmorphism {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    font-family: var(--font-poppins, sans-serif);
+    text-transform: none;
+}
+
+.glassmorphism .header {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+    margin: -20px -20px 2rem -20px;
+}
+
+.glassmorphism .section {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+.glassmorphism .sectionTitle {
+    border-bottom: none;
+    color: #4f46e5;
+    background: linear-gradient(90deg, rgba(79, 70, 229, 0.1) 0%, transparent 100%);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin: -0.5rem -0.5rem 1rem -0.5rem;
+}
+
+.glassmorphism .skillTag {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #374151;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.glassmorphism .profilePhotoSection {
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+/* --- Neon Tech --- */
+.neonTech {
+    background-color: #0a0a0a;
+    color: #d4d4d4;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: none;
+    border: 1px solid #262626;
+}
+
+.neonTech .name {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 0 0 20px rgba(14, 165, 233, 0.3);
+    letter-spacing: -0.05em;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.neonTech .sectionTitle {
+    color: #0ea5e9;
+    border-bottom: 1px dashed #262626;
+    text-transform: lowercase;
+}
+
+.neonTech .sectionTitle::before {
+    content: "> ";
+    color: #ec4899;
+}
+
+.neonTech .itemTitle {
+    color: #e5e5e5;
+    font-weight: bold;
+}
+
+.neonTech .itemSubtitle {
+    color: #ec4899;
+}
+
+.neonTech .skillTag {
+    background: transparent;
+    border: 1px solid rgba(14, 165, 233, 0.5);
+    color: #0ea5e9;
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(14, 165, 233, 0.1);
+}
+
+.neonTech a {
+    color: #0ea5e9 !important;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+}
+
+.neonTech .profilePhotoSection {
+    border-color: #0ea5e9;
+    border-radius: 0;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+}
+
+.neonTech .photoPlaceholder {
+    background-color: #171717;
+    color: #404040;
+}
+
+/* --- Bold Typographic --- */
+.boldTypographic {
+    background-color: #fff;
+    color: #000;
+    font-family: var(--font-inter, sans-serif);
+    text-transform: none;
+}
+
+.boldTypographic .name {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    margin-bottom: 2rem;
+    word-break: break-word;
+    text-transform: uppercase;
+}
+
+.boldTypographic .header {
+    display: flex;
+    flex-direction: column;
+}
+
+.boldTypographic .sectionTitle {
+    font-size: 2.2rem;
+    font-weight: 900;
+    border-bottom: 5px solid #000;
+    margin-bottom: 2rem;
+    display: table;
+    padding-bottom: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.boldTypographic .itemTitle {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.boldTypographic .itemSubtitle {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: #555;
+    margin-top: 0.2rem;
+}
+
+.boldTypographic .skillTag {
+    background: #000;
+    color: #fff;
+    border-radius: 0;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+}
+
+.boldTypographic .profilePhotoSection {
+    border-radius: 0;
+    border: 5px solid #000;
+}
+
+/* --- Internship Pro --- */
+.internship {
+    background: #ffffff;
+    color: #1f2937;
+    font-family: var(--font-poppins, sans-serif);
+    text-transform: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.internship::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #14b8a6);
+}
+
+.internship .name {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.internship .sectionTitle {
+    font-size: 1.2rem;
+    color: #4f46e5;
+    border-bottom: none;
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.internship .sectionTitle::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 4px;
+    background: linear-gradient(180deg, #3b82f6, #ec4899);
+    border-radius: 4px;
+}
+
+.internship .itemTitle {
+    font-weight: 700;
+    color: #111827;
+    font-size: 1.1rem;
+}
+
+.internship .itemSubtitle {
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+.internship .skillTag {
+    background: linear-gradient(135deg, #f3e8ff, #e0e7ff);
+    color: #4f46e5;
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(79, 70, 229, 0.1);
+    transition: transform 0.2s;
+}
+
+.internship .skillTag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2);
+}
+
+.internship .profilePhotoSection {
+    border: 4px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+}
+
+.internship .contactItem {
+    background-color: #f8fafc;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+/* --- Fresher Starter --- */
+.fresher {
+    background-color: #fafaf9;
+    color: #1c1917;
+    font-family: var(--font-inter, sans-serif);
+    text-transform: none;
+    border: 3px solid #1c1917;
+    border-radius: 8px;
+    box-shadow: 8px 8px 0px #1c1917;
+}
+
+.fresher .header {
+    background-color: #fef08a;
+    margin: -40px -40px 2rem -40px;
+    padding: 2.5rem 40px;
+    border-bottom: 3px solid #1c1917;
+}
+
+.fresher .name {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #1c1917;
+    line-height: 1;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+}
+
+.fresher .sectionTitle {
+    background-color: #1c1917;
+    color: #f8fafc;
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    font-weight: 800;
+    border-radius: 4px;
+    transform: rotate(-1deg);
+    box-shadow: 4px 4px 0px #94a3b8;
+    margin-bottom: 1.5rem;
+    border: none;
+}
+
+.fresher .itemTitle {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1c1917;
+    margin-bottom: 0.2rem;
+}
+
+.fresher .itemSubtitle {
+    font-weight: 700;
+    color: #b91c1c;
+    background-color: #fee2e2;
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    border: 1px solid #b91c1c;
+}
+
+.fresher .skillTag {
+    background-color: #ffffff;
+    color: #1c1917;
+    border: 2px solid #1c1917;
+    border-radius: 4px;
+    font-weight: 800;
+    box-shadow: 3px 3px 0px #1c1917;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.fresher .profilePhotoSection {
+    border: 3px solid #1c1917;
+    border-radius: 8px;
+    box-shadow: 6px 6px 0px #1c1917;
+    background-color: #fff;
+}
+
+.fresher .contactItem {
+    font-weight: 600;
+}
+
+.fresher .contactInfo {
+    margin-top: 1.5rem;
+}
+
 @media print {
     .previewContainer {
         width: 100%;

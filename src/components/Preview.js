@@ -7,6 +7,11 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
 
     const config = data.photoConfig || { shape: 'circle', size: 'medium' };
 
+    const formatUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `https://${url}`;
+    };
+
     // Template specific classes
     const containerClass = `${styles.previewContainer} ${styles[activeTemplate] || styles.modern}`;
 
@@ -37,21 +42,27 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
                                 </div>
                             )}
                             {data.personal.portfolio && (
-                                <div className={styles.contactItem}>
-                                    <Globe size={14} />
-                                    <span>{data.personal.portfolio}</span>
+                                <div className={styles.contactItem} style={{ display: 'block' }}>
+                                    <Globe size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
+                                    <a href={formatUrl(data.personal.portfolio)} style={{ color: '#2563eb', textDecoration: 'none', display: 'inline' }}>
+                                        {data.personal.portfolio}
+                                    </a>
                                 </div>
                             )}
                             {data.personal.github && (
-                                <div className={styles.contactItem}>
-                                    <Github size={14} />
-                                    <span>{data.personal.github}</span>
+                                <div className={styles.contactItem} style={{ display: 'block' }}>
+                                    <Github size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
+                                    <a href={formatUrl(data.personal.github)} style={{ color: '#2563eb', textDecoration: 'none', display: 'inline' }}>
+                                        {data.personal.github}
+                                    </a>
                                 </div>
                             )}
                             {data.personal.linkedin && (
-                                <div className={styles.contactItem}>
-                                    <Linkedin size={14} />
-                                    <span>{data.personal.linkedin}</span>
+                                <div className={styles.contactItem} style={{ display: 'block' }}>
+                                    <Linkedin size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
+                                    <a href={formatUrl(data.personal.linkedin)} style={{ color: '#2563eb', textDecoration: 'none', display: 'inline' }}>
+                                        {data.personal.linkedin}
+                                    </a>
                                 </div>
                             )}
                         </div>
@@ -124,9 +135,12 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
                             <div className={styles.itemHeader}>
                                 <span className={styles.itemTitle}>{proj.name}</span>
                                 {proj.link && (
-                                    <a href={proj.link} target="_blank" rel="noopener noreferrer" className={styles.date} style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
-                                        <LinkIcon size={12} /> Link
-                                    </a>
+                                    <span className={styles.date} style={{ display: 'block' }}>
+                                        <LinkIcon size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
+                                        <a href={formatUrl(proj.link)} style={{ color: '#2563eb', textDecoration: 'none', display: 'inline' }}>
+                                            Link
+                                        </a>
+                                    </span>
                                 )}
                             </div>
                             {proj.description && <p className={styles.description}>{proj.description}</p>}

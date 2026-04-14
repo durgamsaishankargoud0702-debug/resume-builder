@@ -7,12 +7,13 @@ export async function POST(req) {
     try {
         await dbConnect();
 
-        const { fullName, email, password } = await req.json();
+        const { name, fullName, email, password } = await req.json();
+        const finalName = name || fullName;
 
         // Validation
-        if (!email || !password) {
+        if (!finalName || !email || !password) {
             return NextResponse.json(
-                { status: 'error', message: 'Email and password are required' },
+                { status: 'error', message: 'Name, email and password are required' },
                 { status: 400 }
             );
         }
@@ -43,7 +44,7 @@ export async function POST(req) {
 
         // Create user
         const user = await User.create({
-            fullName: fullName || '',
+            name: finalName,
             email,
             password: hashedPassword,
         });
@@ -51,9 +52,10 @@ export async function POST(req) {
         // Return user data (excluding password)
         const userData = {
             _id: user._id,
-            fullName: user.fullName,
+            name: user.name,
             email: user.email,
-            profilePhotoUrl: user.profilePhotoUrl,
+            isPremium: user.isPremium,
+            purchasedTemplates: user.purchasedTemplates,
             createdAt: user.createdAt,
         };
 
@@ -65,7 +67,7 @@ export async function POST(req) {
     } catch (error) {
         console.error('Signup error details:', error);
         return NextResponse.json(
-            { status: 'error', message: 'Failed to create account', error: error.message, stack: error.stack },
+            { status: 'error', message: 'Failed to create account', error: error.message },
             { status: 500 }
         );
     }

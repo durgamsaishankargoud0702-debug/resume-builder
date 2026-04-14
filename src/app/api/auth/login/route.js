@@ -38,8 +38,10 @@ export async function POST(req) {
         // Return user data (excluding password)
         const userData = {
             _id: user._id,
-            fullName: user.fullName,
+            name: user.name,
             email: user.email,
+            isPremium: user.isPremium,
+            purchasedTemplates: user.purchasedTemplates,
             profilePhotoUrl: user.profilePhotoUrl,
             createdAt: user.createdAt,
         };

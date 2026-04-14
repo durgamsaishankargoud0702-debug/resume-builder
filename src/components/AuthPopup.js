@@ -1,17 +1,19 @@
 import React from 'react';
 import { X } from 'lucide-react';
+import { signIn } from 'next-auth/react';
 import styles from '../styles/AuthPopup.module.css';
 
 export default function AuthPopup({ isOpen, onClose, onLogin }) {
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [success, setSuccess] = React.useState(false);
-    const [mode, setMode] = React.useState('login'); // 'login' or 'signup'
+    const [mode, setMode] = React.useState('login'); // 'login', 'signup', 'forgot', or 'reset'
 
     // Form fields
-    const [fullName, setFullName] = React.useState('');
+    const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [otp, setOtp] = React.useState('');
 
     if (!isOpen) return null;
 
@@ -21,35 +23,88 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
         setError(null);
 
         try {
-            const endpoint = mode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
-            const body = mode === 'signup'
-                ? { fullName, email, password }
-                : { email, password };
+            if (mode === 'forgot') {
+                const response = await fetch('/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    setMode('reset');
+                    setIsLoading(false);
+                    return;
+                } else {
+                    setError(data.message || 'Failed to request reset link');
+                    setIsLoading(false);
+                    return;
+                }
+            }
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
+            if (mode === 'reset') {
+                const response = await fetch('/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp, newPassword: password }),
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        setSuccess(false);
+                        setMode('login');
+                        setIsLoading(false);
+                        setPassword('');
+                        setOtp('');
+                    }, 2500);
+                    return;
+                } else {
+                    setError(data.message || 'Failed to reset password');
+                    setIsLoading(false);
+                    return;
+                }
+            }
+
+            if (mode === 'signup') {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password }),
+                });
+
+                const data = await response.json();
+
+                if (data.status !== 'success') {
+                    setError(data.message || 'Authentication failed');
+                    setIsLoading(false);
+                    return;
+                }
+            }
+
+            // Always login via NextAuth after signup or if mode is login
+            const result = await signIn('credentials', {
+                redirect: false,
+                email,
+                password,
             });
 
-            const data = await response.json();
-
-            if (data.status === 'success') {
+            if (result?.error) {
+                setError(result.error);
+                setIsLoading(false);
+            } else {
                 setSuccess(true);
-
-                // Show success animation briefly before closing
                 setTimeout(() => {
-                    onLogin('email', data.data);
+                    onLogin('credentials', { email, name }); 
                     setSuccess(false);
                     setIsLoading(false);
-                    // Reset form
-                    setFullName('');
+                    setName('');
                     setEmail('');
                     setPassword('');
                 }, 1000);
-            } else {
-                setError(data.message || 'Authentication failed');
-                setIsLoading(false);
             }
         } catch (err) {
             setError('Network error. Please try again.');
@@ -60,9 +115,10 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
     const toggleMode = () => {
         setMode(mode === 'login' ? 'signup' : 'login');
         setError(null);
-        setFullName('');
+        setName('');
         setEmail('');
         setPassword('');
+        setOtp('');
     };
 
     return (
@@ -73,14 +129,18 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                 </button>
 
                 <h2 className={styles.title}>
-                    {success ? 'Welcome!' : mode === 'login' ? 'Login' : 'Sign Up'}
+                    {success ? (mode === 'reset' ? 'Password Reset!' : 'Welcome!') : mode === 'login' ? 'Login' : mode === 'signup' ? 'Sign Up' : mode === 'reset' ? 'Enter OTP' : 'Reset Password'}
                 </h2>
                 <p className={styles.subtitle}>
                     {success
-                        ? 'Successfully authenticated'
+                        ? (mode === 'reset' ? 'Your password has been successfully updated.' : 'Successfully authenticated')
                         : mode === 'login'
                             ? 'Login to access your resume builder'
-                            : 'Create an account to get started'}
+                            : mode === 'signup'
+                                ? 'Create an account to get started'
+                                : mode === 'reset'
+                                    ? 'Check your email for the 6-digit code'
+                                    : 'Enter your email to receive a reset link'}
                 </p>
 
                 {error && (
@@ -115,7 +175,21 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                         </div>
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} style={{ marginTop: '1.5rem' }}>
+                    <>
+                        {mode === 'login' && (
+                            <div style={{
+                                backgroundColor: '#f0f9ff',
+                                border: '1px solid #bae6fd',
+                                padding: '0.75rem',
+                                borderRadius: '0.5rem',
+                                fontSize: '0.85rem',
+                                color: '#0369a1',
+                                marginBottom: '1rem'
+                            }}>
+                                <strong>Tip:</strong> Don't have credentials? Switch to <strong>Sign Up</strong> to create your account!
+                            </div>
+                        )}
+                        <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
                         {mode === 'signup' && (
                             <div style={{ marginBottom: '1rem' }}>
                                 <label style={{
@@ -129,8 +203,8 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                                 </label>
                                 <input
                                     type="text"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                     placeholder="John Doe"
                                     disabled={isLoading}
                                     style={{
@@ -164,7 +238,7 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="you@example.com"
                                 required
-                                disabled={isLoading}
+                                disabled={isLoading || mode === 'reset'}
                                 style={{
                                     width: '100%',
                                     padding: '0.75rem',
@@ -173,48 +247,106 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                                     fontSize: '1rem',
                                     outline: 'none',
                                     transition: 'border-color 0.2s',
+                                    backgroundColor: mode === 'reset' ? '#f3f4f6' : 'white',
+                                    color: mode === 'reset' ? '#6b7280' : 'inherit'
                                 }}
                                 onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
                                 onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                             />
                         </div>
 
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <label style={{
-                                display: 'block',
-                                marginBottom: '0.5rem',
-                                fontSize: '0.9rem',
-                                fontWeight: '500',
-                                color: '#374151'
-                            }}>
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                required
-                                minLength={6}
-                                disabled={isLoading}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.75rem',
-                                    border: '1px solid #d1d5db',
-                                    borderRadius: '0.5rem',
-                                    fontSize: '1rem',
-                                    outline: 'none',
-                                    transition: 'border-color 0.2s',
-                                }}
-                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
-                            />
-                            {mode === 'signup' && (
-                                <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.25rem' }}>
-                                    Minimum 6 characters
-                                </p>
-                            )}
-                        </div>
+                        {mode === 'reset' && (
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{
+                                    display: 'block',
+                                    marginBottom: '0.5rem',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '500',
+                                    color: '#374151'
+                                }}>
+                                    6-Digit OTP
+                                </label>
+                                <input
+                                    type="text"
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                    placeholder="123456"
+                                    required
+                                    disabled={isLoading}
+                                    maxLength={6}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        border: '1px solid #d1d5db',
+                                        borderRadius: '0.5rem',
+                                        fontSize: '1.25rem',
+                                        letterSpacing: '0.25rem',
+                                        textAlign: 'center',
+                                        outline: 'none',
+                                        transition: 'border-color 0.2s',
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                                />
+                            </div>
+                        )}
+
+                        {mode !== 'forgot' && (
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                    <label style={{
+                                        fontSize: '0.9rem',
+                                        fontWeight: '500',
+                                        color: '#374151'
+                                    }}>
+                                        {mode === 'reset' ? 'New Password' : 'Password'}
+                                    </label>
+                                    {mode === 'login' && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setMode('forgot')}
+                                            tabIndex="-1"
+                                            style={{
+                                                fontSize: '0.8rem',
+                                                color: '#3b82f6',
+                                                background: 'none',
+                                                border: 'none',
+                                                cursor: 'pointer',
+                                                padding: 0,
+                                                fontWeight: '500'
+                                            }}
+                                        >
+                                            Forgot Password?
+                                        </button>
+                                    )}
+                                </div>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    required
+                                    minLength={6}
+                                    disabled={isLoading}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        border: '1px solid #d1d5db',
+                                        borderRadius: '0.5rem',
+                                        fontSize: '1rem',
+                                        outline: 'none',
+                                        transition: 'border-color 0.2s',
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                    onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+                                />
+                                {mode === 'signup' && (
+                                    <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                                        Minimum 6 characters
+                                    </p>
+                                )}
+                            </div>
+                        )}
 
                         <button
                             type="submit"
@@ -233,7 +365,7 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                                 transition: 'background-color 0.2s',
                             }}
                         >
-                            {isLoading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Sign Up'}
+                            {isLoading ? 'Please wait...' : mode === 'login' ? 'Login' : mode === 'signup' ? 'Sign Up' : mode === 'reset' ? 'Reset Password' : 'Send Reset Link'}
                         </button>
 
                         <div style={{
@@ -281,8 +413,28 @@ export default function AuthPopup({ isOpen, onClose, onLogin }) {
                                     </button>
                                 </>
                             )}
+                            
+                            {(mode === 'forgot' || mode === 'reset') && (
+                                <button
+                                    type="button"
+                                    onClick={() => setMode('login')}
+                                    disabled={isLoading}
+                                    style={{
+                                        color: '#3b82f6',
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        fontWeight: '500',
+                                        display: 'block',
+                                        margin: '0 auto'
+                                    }}
+                                >
+                                    Back to Login
+                                </button>
+                            )}
                         </div>
                     </form>
+                </>
                 )}
             </div>
         </div>

@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-    fullName: {
+    name: {
         type: String,
+        required: [true, 'Please provide a name'],
         trim: true,
     },
     email: {
@@ -22,8 +23,29 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    isPremium: {
+        type: Boolean,
+        default: false,
+    },
+    premiumExpiry: {
+        type: Date,
+        default: null,
+    },
+    purchasedTemplates: {
+        type: [String],
+        default: [],
+    },
+    resetOtp: {
+        type: String,
+        default: null,
+    },
+    resetOtpExpiry: {
+        type: Date,
+        default: null,
+    },
 }, {
     timestamps: true, // Automatically adds createdAt and updatedAt
 });
 
+// Prevent model recompilation in Next.js development
 export default mongoose.models.User || mongoose.model('User', UserSchema);

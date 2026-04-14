@@ -1,0 +1,18 @@
+export const TEMPLATES = [
+    { id: 'internship', name: 'Internship Pro', category: 'Modern', description: 'Vibrant energetic gradient design tailored for interns', isPremium: false, price: 0 },
+    { id: 'fresher', name: 'Fresher Starter', category: 'Modern', description: 'Standout neobrutalist aesthetic for first-time job seekers', isPremium: true, price: 13 },
+    { id: 'classicAts', name: 'Classic ATS', category: 'ATS', description: 'Standard, parseable format', isPremium: false, price: 0 },
+    { id: 'minimalAts', name: 'Minimal ATS', category: 'ATS', description: 'Clean and simple', isPremium: false, price: 0 },
+    { id: 'professionalAts', name: 'Professional ATS', category: 'ATS', description: 'Corporate standard', isPremium: false, price: 0 },
+    { id: 'modernAts', name: 'Modern ATS', category: 'ATS', description: 'Contemporary yet parseable', isPremium: false, price: 0 },
+    { id: 'executiveAts', name: 'Executive ATS', category: 'ATS', description: 'Senior level layout', isPremium: true, price: 39 },
+    { id: 'hybridAts', name: 'Hybrid ATS', category: 'ATS', description: 'Balanced design', isPremium: true, price: 49 },
+    { id: 'creative', name: 'Creative', category: 'Modern', description: 'Stand out from the crowd', isPremium: true, price: 59 },
+    { id: 'clean', name: 'Clean', category: 'Modern', description: 'Whitespace focused', isPremium: true, price: 49 },
+    { id: 'elegant', name: 'Elegant', category: 'Modern', description: 'Sophisticated typography', isPremium: true, price: 49 },
+    { id: 'premiumDark', name: 'Premium Dark', category: 'Modern', description: 'Sleek dark mode tech aesthetic', isPremium: true, price: 69 },
+    { id: 'glassmorphism', name: 'Glassmorphism', category: 'Modern', description: 'Frosted glass effects', isPremium: true, price: 79 },
+    { id: 'neonTech', name: 'Neon Tech', category: 'Modern', description: 'High contrast neon styling', isPremium: true, price: 89 },
+    { id: 'boldTypographic', name: 'Bold Typographic', category: 'Modern', description: 'Oversized geometric typography', isPremium: true, price: 79 },
+
+];

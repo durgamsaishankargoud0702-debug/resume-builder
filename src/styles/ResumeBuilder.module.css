@@ -15,6 +15,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
 }
 
 .headerContent {
@@ -35,6 +43,55 @@
   font-size: 1rem;
   opacity: 0.9;
   font-weight: 500;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  backdrop-filter: blur(4px);
+}
+
+.userBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.loginButton, .logoutButton {
+  border-radius: 2rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.loginButton {
+  background-color: white !important;
+  color: #6366f1 !important;
+}
+
+.loginButton:hover {
+  background-color: #f3f4f6 !important;
+  transform: translateY(-1px);
+}
+
+.logoutButton {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.logoutButton:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .profileSection {
@@ -192,8 +249,6 @@
   flex: 1;
   padding: 2rem;
   gap: 2rem;
-  height: calc(100vh - 120px);
-  /* Adjusted for new header height */
   overflow: hidden;
 }
 
@@ -228,6 +283,13 @@
   justify-content: space-between;
   align-items: center;
   background-color: white;
+  gap: 1rem;
+}
+
+.headerButtonGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .cardTitle {
@@ -326,8 +388,26 @@
   font-size: 0.9rem;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   background-color: #7c3aed;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.buttonLocked {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: 1px solid #d97706;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+.buttonLocked:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4);
 }
 
 .buttonSecondary {
@@ -404,5 +484,127 @@
   .profileSection {
     width: 100%;
     justify-content: center;
+  }
+}
+
+.footer {
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footerLink {
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.footerLink:hover {
+  color: #6366f1;
+}
+
+.footerText {
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.footerCopyright {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+@media (max-width: 768px) {
+  .cardHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerButtonGroup {
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .headerButtonGroup button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media print {
+  @page {
+    margin: 10mm;
+    size: A4;
+  }
+
+  :global(body) {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mainHeader,
+  .editorSection,
+  .cardHeader,
+  .footer,
+  :global(button),
+  :global(input[type="file"]) {
+    display: none !important;
+  }
+
+  .container {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+    display: block !important;
+  }
+
+  .content {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    height: auto !important;
+  }
+
+  .previewSection {
+    width: 100% !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .previewBody {
+    background-color: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
   }
 }

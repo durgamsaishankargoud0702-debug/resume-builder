@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { Download, LayoutTemplate } from 'lucide-react';
+import { Download, LayoutTemplate, User, LogOut, LogIn, Lock } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 import Editor from './Editor';
 import Preview from './Preview';
 import AuthPopup from './AuthPopup';
 import TemplatePopup from './TemplatePopup';
+import PolicyPopup from './PolicyPopup';
 import styles from '../styles/ResumeBuilder.module.css';
+import { TEMPLATES } from '../lib/templates';
 
 export default function ResumeBuilder() {
   const [resumeData, setResumeData] = useState({
@@ -55,32 +57,150 @@ export default function ResumeBuilder() {
     }
   });
 
+  const { data: session, status, update } = useSession();
+  const isAuthenticated = status === 'authenticated';
+  const user = session?.user;
+
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  const [activeTemplate, setActiveTemplate] = useState('modern');
+  const [activeTemplate, setActiveTemplate] = useState('modernAts');
   const [showProfilePhoto, setShowProfilePhoto] = useState(true);
+  const [loadingPayment, setLoadingPayment] = useState(false);
+  const [policyModal, setPolicyModal] = useState({ isOpen: false, key: null });
+
+  const openPolicy = (e, key) => {
+    e.preventDefault();
+    setPolicyModal({ isOpen: true, key });
+  };
+
+  const activeTemplateData = TEMPLATES.find(t => t.id === activeTemplate);
+  const isPremiumTemplate = activeTemplateData?.isPremium;
+  const templatePrice = activeTemplateData?.price || 99;
+  
+  // Calculate if the user has an active subscription
+  const hasActiveSubscription = Boolean(
+    user?.isPremium && 
+    user?.premiumExpiry && 
+    new Date() < new Date(user.premiumExpiry)
+  );
+
+  const isLocked = Boolean(
+    isPremiumTemplate && 
+    !hasActiveSubscription && 
+    !user?.purchasedTemplates?.includes(activeTemplate)
+  );
 
   const fileInputRef = useRef(null);
   const componentRef = useRef(null);
 
-  const handlePrint = useReactToPrint({
-    contentRef: componentRef,
-    documentTitle: `${resumeData.personal.name || 'Resume'}`,
-    onAfterPrint: () => console.log('Print completed'),
-    pageStyle: `
-      @page {
-        margin: 10mm;
-        size: A4;
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlePayment = async (type = 'single') => {
+    if (!session) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    setLoadingPayment(true);
+    const res = await loadRazorpay();
+
+    if (!res) {
+      alert('Razorpay SDK failed to load. Are you online?');
+      setLoadingPayment(false);
+      return;
+    }
+
+    const amountToCharge = type === 'subscription' ? 149 : templatePrice;
+
+    try {
+      const orderRes = await fetch('/api/razorpay/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: amountToCharge }),
+      });
+
+      const data = await orderRes.json();
+
+      if (!orderRes.ok) {
+        alert(`Error: ${data.message || 'Payment setup failed.'}`);
+        setLoadingPayment(false);
+        return;
       }
-      @media print {
-        body {
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-      }
-    `,
-  });
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: data.amount,
+        currency: data.currency,
+        name: 'Resume Builder Pro',
+        description: 'Unlock All Premium Templates',
+        order_id: data.id,
+        handler: async function (response) {
+          const verifyRes = await fetch('/api/razorpay/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              templateId: type === 'single' ? activeTemplate : null,
+              isSubscription: type === 'subscription'
+            }),
+          });
+
+          const verifyData = await verifyRes.json();
+          if (verifyData.status === 'success') {
+            if (type === 'subscription') {
+              alert('Payment Successful! 1-Month Premium Pass activated.');
+              await update({ 
+                isSubscriptionUpdate: true, 
+                premiumExpiry: verifyData.expiryDate 
+              });
+            } else {
+              alert('your resume temelept is unlocked a');
+              await update({ purchasedTemplate: activeTemplate });
+            }
+          } else {
+            alert('Payment verification failed. Please contact support.');
+          }
+        },
+        prefill: {
+          name: session.user.name,
+          email: session.user.email,
+        },
+        theme: { color: '#8b5cf6' },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      console.error('Payment initialization error:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setLoadingPayment(false);
+    }
+  };
+
+  const handlePrint = async () => {
+    if (isLocked) {
+      await handlePayment();
+      return;
+    }
+
+    const originalTitle = document.title;
+    document.title = `${resumeData.personal.name || 'Resume'}`;
+    window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 100);
+  };
 
   const handlePhotoClick = () => {
     if (!isAuthenticated) {
@@ -92,7 +212,6 @@ export default function ResumeBuilder() {
 
   const handleLogin = (provider, userData) => {
     console.log(`Logged in with ${provider}`, userData);
-    setIsAuthenticated(true);
     setIsAuthModalOpen(false);
 
     if (userData) {
@@ -100,7 +219,7 @@ export default function ResumeBuilder() {
         ...prev,
         personal: {
           ...prev.personal,
-          name: userData.fullName || prev.personal.name,
+          name: userData.name || prev.personal.name,
           email: userData.email || prev.personal.email,
         },
         profilePhoto: userData.profilePhotoUrl || prev.profilePhoto
@@ -113,6 +232,10 @@ export default function ResumeBuilder() {
         fileInputRef.current?.click();
       }, 100);
     }
+  };
+
+  const handleLogout = () => {
+    signOut();
   };
 
   const handlePhotoUpload = (e) => {
@@ -261,6 +384,12 @@ export default function ResumeBuilder() {
         }}
       />
 
+      <PolicyPopup
+        isOpen={policyModal.isOpen}
+        onClose={() => setPolicyModal({ isOpen: false, key: null })}
+        policyKey={policyModal.key}
+      />
+
       {/* Hidden File Input */}
       <input
         type="file"
@@ -272,17 +401,37 @@ export default function ResumeBuilder() {
 
       {/* Header */}
       <header className={styles.mainHeader}>
-        <h1 className={styles.headerTitle}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-          Resume Builder Pro
-        </h1>
-        <p className={styles.headerSubtitle}>Create your professional resume in minutes</p>
+        <div className={styles.headerInfo}>
+          <h1 className={styles.headerTitle}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Resume Builder Pro
+          </h1>
+          <p className={styles.headerSubtitle}>Create your professional resume in minutes</p>
+        </div>
+
+        <div className={styles.headerActions}>
+          {isAuthenticated ? (
+            <div className={styles.userInfo}>
+              <div className={styles.userBadge}>
+                <User size={16} />
+                <span>{user?.name || 'User'}</span>
+              </div>
+              <button onClick={handleLogout} className={`${styles.button} ${styles.logoutButton}`}>
+                <LogOut size={16} /> Logout
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setIsAuthModalOpen(true)} className={`${styles.button} ${styles.loginButton}`}>
+              <LogIn size={16} /> Sign In
+            </button>
+          )}
+        </div>
       </header>
 
       <div className={styles.content}>
@@ -297,12 +446,32 @@ export default function ResumeBuilder() {
                 </svg>
                 Edit Resume
               </h2>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div className={styles.headerButtonGroup}>
                 <button className={`${styles.button} ${styles.buttonSecondary}`} onClick={() => window.location.reload()}>
                   Clear
                 </button>
-                <button onClick={handlePrint} className={styles.button}>
-                  <Download size={16} /> Download PDF
+                {isLocked && (
+                  <button
+                    onClick={() => handlePayment('subscription')}
+                    className={`${styles.button}`}
+                    style={{ background: 'linear-gradient(to right, #8b5cf6, #3b82f6)', color: 'white', border: 'none' }}
+                    disabled={loadingPayment}
+                  >
+                    <><Lock size={16} /> Unlock All (1 Month) - ₹149</>
+                  </button>
+                )}
+                <button
+                  onClick={() => handlePayment('single')}
+                  className={`${styles.button} ${isLocked ? styles.buttonLocked : ''}`}
+                  disabled={loadingPayment}
+                >
+                  {loadingPayment ? (
+                    'Processing...'
+                  ) : isLocked ? (
+                    <><Lock size={16} /> Unlock Template (₹{templatePrice})</>
+                  ) : (
+                    <><Download size={16} /> Download PDF</>
+                  )}
                 </button>
               </div>
             </div>
@@ -358,6 +527,22 @@ export default function ResumeBuilder() {
           </div>
         </div>
       </div>
+
+      {/* Corporate Footer */}
+      <footer className={styles.footer}>
+        <div className={styles.footerLinks}>
+          <a href="#" onClick={(e) => openPolicy(e, 'privacy')} className={styles.footerLink}>Privacy Policy</a>
+          <a href="#" onClick={(e) => openPolicy(e, 'terms')} className={styles.footerLink}>Terms of Service</a>
+          <a href="#" onClick={(e) => openPolicy(e, 'refund')} className={styles.footerLink}>Refund Policy</a>
+          <a href="#" onClick={(e) => openPolicy(e, 'contact')} className={styles.footerLink}>Contact Us</a>
+        </div>
+        <p className={styles.footerText}>
+          <strong>Note:</strong> Digital products are non-refundable.
+        </p>
+        <p className={styles.footerCopyright}>
+          © {new Date().getFullYear()} Resume Builder Pro. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
