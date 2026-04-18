@@ -15,6 +15,147 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
     // Template specific classes
     const containerClass = `${styles.previewContainer} ${styles[activeTemplate] || styles.modern}`;
 
+    const isTwoColumnTemplate = activeTemplate === 'vibrantSidebar' || activeTemplate === 'ribbonSidebar';
+
+    if (isTwoColumnTemplate) {
+        return (
+            <div id="resume-preview" className={`${styles.previewContainer} ${styles[activeTemplate]}`} ref={ref}>
+                {activeTemplate === 'ribbonSidebar' && (
+                    <div className={styles.topHeader}>
+                        <h1 className={styles.name}>{data.personal.name}</h1>
+                        <div className={styles.itemSubtitle}>{data.experience[0]?.role || 'Professional'}</div>
+                    </div>
+                )}
+
+                <div className={styles.twoColumnGrid}>
+                    {/* Sidebar */}
+                    <div className={styles.sidebar}>
+                        {activeTemplate === 'vibrantSidebar' && (
+                            <>
+                                {showProfilePhoto && (
+                                    <div className={styles.photoContainer}>
+                                        <div className={styles.photoRing}>
+                                            <div className={`${styles.profilePhotoSection} ${styles.sidebarPhotoCircle}`} onClick={onPhotoClick}>
+                                                {profilePhoto ? (
+                                                    <img src={profilePhoto} alt="Profile" className={styles.profilePhoto} />
+                                                ) : (
+                                                    <div className={styles.photoPlaceholder}>Add Photo</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <h1 className={styles.name}>{data.personal.name}</h1>
+                                <div className={styles.jobTitlePill}>{data.experience[0]?.role || 'Professional'}</div>
+                            </>
+                        )}
+
+                        {activeTemplate === 'ribbonSidebar' && showProfilePhoto && (
+                            <div className={styles.photoContainerRibbon}>
+                                <div className={styles.photoRingsRibbon}>
+                                    <div className={`${styles.profilePhotoSection} ${styles.sidebarPhotoCircle}`} onClick={onPhotoClick}>
+                                        {profilePhoto ? (
+                                            <img src={profilePhoto} alt="Profile" className={styles.profilePhoto} />
+                                        ) : (
+                                            <div className={styles.photoPlaceholder}>Add Photo</div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className={styles.sidebarSection}>
+                            <h3 className={styles.sidebarTitle}>Contacts</h3>
+                            <div className={styles.sidebarContactList}>
+                                {data.personal.email && (
+                                    <div className={styles.contactItem}>
+                                        <Mail size={14} /> <span>{data.personal.email}</span>
+                                    </div>
+                                )}
+                                {data.personal.phone && (
+                                    <div className={styles.contactItem}>
+                                        <Phone size={14} /> <span>{data.personal.phone}</span>
+                                    </div>
+                                )}
+                                {data.personal.address && (
+                                    <div className={styles.contactItem}>
+                                        <MapPin size={14} /> <span>{data.personal.address}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {data.skills.length > 0 && (
+                            <div className={styles.sidebarSection}>
+                                <h3 className={styles.sidebarTitle}>Skills</h3>
+                                <div className={styles.skillsContainer}>
+                                    {data.skills.map((skill, index) => (
+                                        <div key={index} className={styles.skillBarItem}>
+                                            <span className={styles.skillBarName}>{skill}</span>
+                                            <div className={styles.skillBarBg}><div className={styles.skillBarFill} style={{ width: '80%' }}></div></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Main Content */}
+                    <div className={styles.mainContent}>
+                        {data.personal.summary && (
+                            <div className={styles.contentSection}>
+                                <h2 className={styles.sectionTitle}>About Me</h2>
+                                <p className={styles.description}>{data.personal.summary}</p>
+                            </div>
+                        )}
+
+                        {data.education.length > 0 && (
+                            <div className={styles.contentSection}>
+                                <h2 className={styles.sectionTitle}>Education</h2>
+                                <div className={styles.timeline}>
+                                    {data.education.map((edu) => (
+                                        <div key={edu.id} className={styles.timelineItem}>
+                                          <div className={styles.timelineMarker}></div>
+                                            <div className={styles.timelineContent}>
+                                                <div className={styles.itemHeader}>
+                                                  <span className={styles.itemTitle}>{edu.degree}</span>
+                                                  <span className={styles.date}>{edu.year}</span>
+                                                </div>
+                                                <div className={styles.itemSubtitle}>{edu.school}</div>
+                                                {edu.description && <p className={styles.descriptionText}>{edu.description}</p>}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {data.experience.length > 0 && (
+                            <div className={styles.contentSection}>
+                                <h2 className={styles.sectionTitle}>Experience</h2>
+                                <div className={styles.timeline}>
+                                    {data.experience.map((exp) => (
+                                        <div key={exp.id} className={styles.timelineItem}>
+                                            <div className={styles.timelineMarker}></div>
+                                            <div className={styles.timelineContent}>
+                                                <div className={styles.itemHeader}>
+                                                    <span className={styles.itemTitle}>{exp.role}</span>
+                                                    <span className={styles.date}>{exp.duration}</span>
+                                                </div>
+                                                <div className={styles.itemSubtitle}>{exp.company}</div>
+                                                {exp.description && <p className={styles.descriptionText}>{exp.description}</p>}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div id="resume-preview" className={containerClass} ref={ref}>
             {/* Header */}

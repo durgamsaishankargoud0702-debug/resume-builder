@@ -75,18 +75,18 @@ export default function ResumeBuilder() {
 
   const activeTemplateData = TEMPLATES.find(t => t.id === activeTemplate);
   const isPremiumTemplate = activeTemplateData?.isPremium;
-  const templatePrice = activeTemplateData?.price || 99;
-  
+  const templatePrice = activeTemplateData?.price || 0;
+
   // Calculate if the user has an active subscription
   const hasActiveSubscription = Boolean(
-    user?.isPremium && 
-    user?.premiumExpiry && 
+    user?.isPremium &&
+    user?.premiumExpiry &&
     new Date() < new Date(user.premiumExpiry)
   );
 
   const isLocked = Boolean(
-    isPremiumTemplate && 
-    !hasActiveSubscription && 
+    isPremiumTemplate &&
+    !hasActiveSubscription &&
     !user?.purchasedTemplates?.includes(activeTemplate)
   );
 
@@ -159,9 +159,9 @@ export default function ResumeBuilder() {
           if (verifyData.status === 'success') {
             if (type === 'subscription') {
               alert('Payment Successful! 1-Month Premium Pass activated.');
-              await update({ 
-                isSubscriptionUpdate: true, 
-                premiumExpiry: verifyData.expiryDate 
+              await update({
+                isSubscriptionUpdate: true,
+                premiumExpiry: verifyData.expiryDate
               });
             } else {
               alert('your resume temelept is unlocked a');
@@ -190,7 +190,7 @@ export default function ResumeBuilder() {
 
   const handlePrint = async () => {
     if (isLocked) {
-      await handlePayment();
+      await handlePayment('single');
       return;
     }
 
@@ -461,7 +461,7 @@ export default function ResumeBuilder() {
                   </button>
                 )}
                 <button
-                  onClick={() => handlePayment('single')}
+                  onClick={handlePrint}
                   className={`${styles.button} ${isLocked ? styles.buttonLocked : ''}`}
                   disabled={loadingPayment}
                 >

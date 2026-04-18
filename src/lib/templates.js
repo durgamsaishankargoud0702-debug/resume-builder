@@ -1,6 +1,8 @@
 export const TEMPLATES = [
     { id: 'internship', name: 'Internship Pro', category: 'Modern', description: 'Vibrant energetic gradient design tailored for interns', isPremium: false, price: 0 },
     { id: 'fresher', name: 'Fresher Starter', category: 'Modern', description: 'Standout neobrutalist aesthetic for first-time job seekers', isPremium: true, price: 13 },
+    { id: 'vibrantSidebar', name: 'Vibrant Sidebar', category: 'Modern', description: 'Two-column design with colorful accents and circular rings', isPremium: true, price: 35 },
+    { id: 'ribbonSidebar', name: 'Ribbon Sidebar', category: 'Modern', description: 'Professional layout with ribbon-style headers and top name bar', isPremium: true, price: 38 },
     { id: 'classicAts', name: 'Classic ATS', category: 'ATS', description: 'Standard, parseable format', isPremium: false, price: 0 },
     { id: 'minimalAts', name: 'Minimal ATS', category: 'ATS', description: 'Clean and simple', isPremium: false, price: 0 },
     { id: 'professionalAts', name: 'Professional ATS', category: 'ATS', description: 'Corporate standard', isPremium: false, price: 0 },

@@ -73,7 +73,7 @@ export default function TemplateCard({ template, currentTemplate, onSelectTempla
                         fontWeight: '600'
                     }}>
                         {isLocked ? <Lock size={10} /> : <CheckCircle size={10} />}
-                        {isLocked ? 'PRO' : 'UNLOCKED'}
+                        {isLocked ? `PRO - ₹${template.price}` : 'UNLOCKED'}
                     </div>
                 )}
             </div>

@@ -809,6 +809,367 @@
     margin-top: 1.5rem;
 }
 
+/* --- New Two-Column Layouts --- */
+.twoColumnGrid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 0;
+    margin: -40px;
+    min-height: 297mm;
+}
+
+.sidebar {
+    padding: 30px 20px;
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.mainContent {
+    padding: 40px 40px;
+    background-color: #ffffff;
+}
+
+.sidebarPhotoCircle {
+    width: 160px !important;
+    height: 160px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.sidebarTitle {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+    padding-bottom: 5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebarSection {
+    margin-bottom: 40px;
+}
+
+.sidebarContactList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebarContactList .contactItem {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: none;
+}
+
+.skillsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.skillBarItem {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.skillBarName {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.skillBarBg {
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.skillBarFill {
+    height: 100%;
+    background-color: #ff8c00;
+}
+
+/* Vibrant Sidebar Specifics (Image 1) */
+.vibrantSidebar .sidebar {
+    background-color: #111111;
+}
+
+.vibrantSidebar .photoContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.vibrantSidebar .photoRing {
+    padding: 10px;
+    border: 4px solid #ff8c00;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.vibrantSidebar .name {
+    color: white;
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.vibrantSidebar .jobTitlePill {
+    background-color: white;
+    color: #111;
+    padding: 5px 20px;
+    border-radius: 20px;
+    display: table;
+    margin: 0 auto 40px auto;
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.vibrantSidebar .sidebarTitle {
+    color: #ff8c00;
+    border-bottom-color: #ff8c00;
+}
+
+.vibrantSidebar .skillBarFill {
+    background-color: #ff8c00;
+}
+
+/* Ribbon Sidebar Specifics (Image 2) */
+.ribbonSidebar .topHeader {
+    background-color: #722f37; /* Maroon/Wine */
+    color: white;
+    padding: 40px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: -40px -40px 0 -40px;
+    min-height: 120px;
+    justify-content: center;
+}
+
+.ribbonSidebar .topHeader .name {
+    color: white;
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.ribbonSidebar .topHeader .itemSubtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.ribbonSidebar .sidebar {
+    background-color: #1a1a1a;
+    padding-top: 20px;
+}
+
+.ribbonSidebar .photoContainerRibbon {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.ribbonSidebar .photoRingsRibbon {
+    padding: 8px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+}
+
+.ribbonSidebar .photoRingsRibbon::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid #ff4500;
+    border-radius: 50%;
+}
+
+.ribbonSidebar .sidebarTitle {
+    background-color: #722f37;
+    margin-left: -20px;
+    padding: 8px 15px 8px 20px;
+    border-radius: 0 30px 30px 0;
+    border-bottom: none;
+    display: inline-block;
+    color: white;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+}
+
+.ribbonSidebar .skillBarFill {
+    background-color: #722f37;
+}
+
+.vibrantSidebar .jobTitlePill {
+    background-color: white;
+    color: #111;
+    padding: 5px 20px;
+    border-radius: 20px;
+    display: table;
+    margin: 0 auto 40px auto;
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.vibrantSidebar .sidebarTitle {
+    color: #ff8c00;
+    border-bottom-color: #ff8c00;
+}
+
+.vibrantSidebar .skillBarFill {
+    background-color: #ff8c00;
+}
+
+/* Ribbon Sidebar Specifics (Image 2) */
+.ribbonSidebar .topHeader {
+    background-color: #722f37; /* Maroon/Wine */
+    color: white;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: -40px -40px 0 -40px;
+}
+
+.ribbonSidebar .topHeader .name {
+    color: white;
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.ribbonSidebar .topHeader .itemSubtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.ribbonSidebar .sidebar {
+    background-color: #1a1a1a;
+    padding-top: 60px;
+}
+
+.ribbonSidebar .photoContainerRibbon {
+    display: flex;
+    justify-content: center;
+    margin-top: -80px;
+    margin-bottom: 40px;
+}
+
+.ribbonSidebar .photoRingsRibbon {
+    padding: 8px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    position: relative;
+}
+
+.ribbonSidebar .photoRingsRibbon::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid #ff4500;
+    border-radius: 50%;
+}
+
+.ribbonSidebar .sidebarTitle {
+    background-color: #722f37;
+    margin-left: -30px;
+    padding: 8px 15px 8px 30px;
+    border-radius: 0 30px 30px 0;
+    border-bottom: none;
+    display: inline-block;
+    color: white;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+}
+
+.ribbonSidebar .skillBarFill {
+    background-color: #722f37;
+}
+
+/* Timeline Components */
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background-color: #e5e7eb;
+}
+
+.timelineItem {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timelineMarker {
+    position: absolute;
+    left: -30px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #3b82f6;
+    z-index: 1;
+}
+
+.vibrantSidebar .timelineMarker {
+    background-color: #ff8c00;
+    box-shadow: 0 0 0 2px #ff8c00;
+}
+
+.ribbonSidebar .timelineMarker {
+    background-color: #722f37;
+    box-shadow: 0 0 0 2px #722f37;
+}
+
+.timelineContent .itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.timelineContent .itemTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.timelineContent .itemSubtitle {
+    color: #4b5563;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.descriptionText {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #4b5563;
+    white-space: pre-line;
+}
+
 @media print {
     .previewContainer {
         width: 100%;
@@ -820,8 +1181,16 @@
         print-color-adjust: exact;
     }
 
-    @page {
-        margin: 10mm;
-        size: auto;
+    .twoColumnGrid {
+        margin: 0;
     }
-}
+
+    .ribbonSidebar .topHeader {
+        margin: 0;
+    }
+
+    @page {
+        margin: 0mm;
+        size: A4;
+    }
+}
