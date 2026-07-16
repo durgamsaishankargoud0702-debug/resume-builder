@@ -171,21 +171,97 @@
     color: #374151;
 }
 
+.classicAts {
+    text-transform: none;
+}
+
+.classicAts .header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.classicAts .headerText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .classicAts .name {
     font-size: 2rem;
     text-transform: uppercase;
     border-bottom: 2px solid black;
     padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    width: 100%;
+}
+
+.classicAts .subtitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2563eb;
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.classicAts .contactInfo {
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.classicAts .contactItem {
+    display: flex !important;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.classicAts .contactItem::after {
+    content: "|";
+    margin-left: 0.75rem;
+    color: #4b5563;
+}
+
+.classicAts .contactItem:last-child::after {
+    display: none;
+}
+
+.classicAts svg.lucide-mail {
+    stroke: #2563eb;
+}
+
+.classicAts svg.lucide-phone {
+    stroke: #16a34a;
+}
+
+.classicAts svg.lucide-map-pin {
+    stroke: #dc2626;
+}
+
+.classicAts svg.lucide-globe {
+    stroke: #2563eb;
+}
+
+.classicAts svg.lucide-github {
+    stroke: #1f2937;
+}
+
+.classicAts svg.lucide-linkedin {
+    stroke: #0a66c2;
 }
 
 .classicAts .sectionTitle {
-    border-bottom: 1px solid black;
-    color: black;
-}
-
-.classicAts .contactItem svg {
-    display: none;
+    color: #000;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 0.25rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
 }
 
 .classicAts .skillTag {
@@ -314,6 +390,7 @@
 .creative {
     background-color: #fff;
     font-family: var(--font-poppins), sans-serif;
+    text-transform: none;
 }
 
 .creative .header {
@@ -893,6 +970,14 @@
     background-color: #ff8c00;
 }
 
+.vibrantSidebar {
+    text-transform: none;
+}
+
+.ribbonSidebar {
+    text-transform: none;
+}
+
 /* Vibrant Sidebar Specifics (Image 1) */
 .vibrantSidebar .sidebar {
     background-color: #111111;
@@ -1173,16 +1258,23 @@
 @media print {
     .previewContainer {
         width: 100%;
-        height: 100%;
+        height: auto;
         margin: 0;
-        padding: 0;
+        padding: 20mm;
         box-shadow: none;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        box-sizing: border-box;
+    }
+
+    .vibrantSidebar,
+    .ribbonSidebar {
+        padding: 0 !important;
     }
 
     .twoColumnGrid {
         margin: 0;
+        min-height: 297mm;
     }
 
     .ribbonSidebar .topHeader {

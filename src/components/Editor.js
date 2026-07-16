@@ -20,6 +20,15 @@ export default function Editor({
     showProfilePhoto,
     setShowProfilePhoto
 }) {
+    const [skillsInput, setSkillsInput] = React.useState(data.skills.join(', '));
+
+    React.useEffect(() => {
+        const parsedLocal = skillsInput.split(',').map(s => s.trim()).filter(Boolean).join(', ');
+        const parsedParent = data.skills.join(', ');
+        if (parsedLocal !== parsedParent) {
+            setSkillsInput(data.skills.join(', '));
+        }
+    }, [data.skills]);
     return (
         <div>
             {/* Personal Details */}
@@ -340,8 +349,11 @@ export default function Editor({
                     <label className={styles.label}>Skills (comma separated)</label>
                     <textarea
                         className={styles.textarea}
-                        value={data.skills.join(', ')}
-                        onChange={(e) => updateSkills(e.target.value)}
+                        value={skillsInput}
+                        onChange={(e) => {
+                            setSkillsInput(e.target.value);
+                            updateSkills(e.target.value);
+                        }}
                         placeholder="e.g. React, JavaScript, CSS, Node.js"
                         style={{ minHeight: '80px' }}
                     />

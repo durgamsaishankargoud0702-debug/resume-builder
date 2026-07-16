@@ -82,6 +82,30 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
                                         <MapPin size={14} /> <span>{data.personal.address}</span>
                                     </div>
                                 )}
+                                {data.personal.portfolio && (
+                                    <div className={styles.contactItem}>
+                                        <Globe size={14} />
+                                        <a href={formatUrl(data.personal.portfolio)} style={{ color: 'inherit', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
+                                            <span>{data.personal.portfolio}</span>
+                                        </a>
+                                    </div>
+                                )}
+                                {data.personal.github && (
+                                    <div className={styles.contactItem}>
+                                        <Github size={14} />
+                                        <a href={formatUrl(data.personal.github)} style={{ color: 'inherit', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
+                                            <span>{data.personal.github}</span>
+                                        </a>
+                                    </div>
+                                )}
+                                {data.personal.linkedin && (
+                                    <div className={styles.contactItem}>
+                                        <Linkedin size={14} />
+                                        <a href={formatUrl(data.personal.linkedin)} style={{ color: 'inherit', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
+                                            <span>{data.personal.linkedin}</span>
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -150,6 +174,33 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
                                 </div>
                             </div>
                         )}
+
+                        {data.projects && data.projects.length > 0 && (
+                            <div className={styles.contentSection}>
+                                <h2 className={styles.sectionTitle}>Projects</h2>
+                                <div className={styles.timeline}>
+                                    {data.projects.map((proj) => (
+                                        <div key={proj.id} className={styles.timelineItem}>
+                                            <div className={styles.timelineMarker}></div>
+                                            <div className={styles.timelineContent}>
+                                                <div className={styles.itemHeader}>
+                                                    <span className={styles.itemTitle}>{proj.name}</span>
+                                                    {proj.link && (
+                                                        <span className={styles.date}>
+                                                            <a href={formatUrl(proj.link)} style={{ color: 'inherit', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
+                                                                <LinkIcon size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
+                                                                Link
+                                                            </a>
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                {proj.description && <p className={styles.descriptionText}>{proj.description}</p>}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -163,6 +214,9 @@ const Preview = forwardRef(({ data, photoSettings, onPhotoClick, activeTemplate 
                 <div className={styles.headerTop}>
                     <div className={styles.headerText}>
                         <h1 className={styles.name}>{data.personal.name}</h1>
+                        {data.experience && data.experience[0]?.role && (
+                            <div className={styles.subtitle}>{data.experience[0].role}</div>
+                        )}
                         <div className={styles.contactInfo}>
                             {data.personal.email && (
                                 <div className={styles.contactItem}>
